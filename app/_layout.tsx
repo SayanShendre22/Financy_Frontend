@@ -50,7 +50,15 @@ export default function RootLayout() {
             // animation: ''
           }}
         />
+         <Stack.Screen
+          name='(modals)/financyWallet'
+          options={{
+            presentation: "modal",
+            // animation: ''
+          }}
+        />
       </Stack>
+      
     </AuthProvider>
   )
 }

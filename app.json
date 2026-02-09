@@ -8,18 +8,33 @@
     "scheme": "financy",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSSpeechRecognitionUsageDescription": "Allow $(PRODUCT_NAME) to use speech recognition.",
+        "NSMicrophoneUsageDescription": "Allow $(PRODUCT_NAME) to use the microphone."
+      }
     },
+
     "android": {
+      "package": "com.sayanshendre.financy",
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
-        "monochromeImage": "./assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./assets/images/icon.png",
+        "backgroundImage": "./assets/images/icon.png",
+        "monochromeImage": "./assets/images/icon.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.RECORD_AUDIO"],
+      
+      "manifest": {
+        "application": {
+          "tools:replace": "android:appComponentFactory",
+          "android:appComponentFactory": "androidx.core.app.CoreComponentFactory"
+        }
+      }
     },
     "web": {
       "output": "static",
@@ -27,6 +42,12 @@
     },
     "plugins": [
       "expo-router",
+      [
+         "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-7043202384843840~6271936866"
+        }
+      ],
       [
         "expo-splash-screen",
         {
@@ -42,9 +63,17 @@
       "expo-secure-store",
       "expo-speech-recognition"
     ],
+
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "9b613ef0-db66-47cf-aa51-c981ee1853d4"
+      }
     }
   }
 }

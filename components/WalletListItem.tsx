@@ -20,10 +20,10 @@ import sbiLogo from "../assets/bank_logos/sbi.png"
 
 // Create a mapping
 const walletLogos: Record<string, any> = {
-  hdfc: hdfcLogo,
-  icici: iciciLogo,
-  sbi: sbiLogo,
-//   axis: axisLogo,
+    hdfc: hdfcLogo,
+    icici: iciciLogo,
+    sbi: sbiLogo,
+    //   axis: axisLogo,
 };
 
 const WalletListItem = ({
@@ -36,33 +36,33 @@ const WalletListItem = ({
     router: Router
 }) => {
 
-const openWallet = () =>{
-    router.push({
-      pathname: '/(modals)/walletModal',
-      params: {
-        id:item?.id,
-        name:item?.bankName,
-        balance:item?.balance,
-        type:item?.accountType,
-        accNo:item?.accountNumber,
-        ifsc:item?.ifscCode
-      }
-    })
-  }
+    const openWallet = () => {
+        router.push({
+            pathname: '/(modals)/walletModal',
+            params: {
+                id: item?.id,
+                name: item?.bankName,
+                balance: item?.balance,
+                type: item?.accountType,
+                accNo: item?.accountNumber,
+                ifsc: item?.ifscCode
+            }
+        })
+    }
 
 
 
     return (
         <Animated.View
-        entering={FadeInDown.delay(index*50)
-            .springify()
-            .damping(13)
-        }
+            entering={FadeInDown.delay(index * 50)
+                .springify()
+                .damping(13)
+            }
         >
             <TouchableOpacity style={styles.container} onPress={openWallet} >
                 <View style={styles.imageContainer} >
                     <Image
-                        style={{flex:1}}
+                        style={{ flex: 1 }}
                         source={walletLogos[item?.bankName.toLowerCase()] || defaultLogo}
                         contentFit='cover'
                         transition={100}
@@ -74,9 +74,9 @@ const openWallet = () =>{
                 </View>
 
                 <Icons.CaretRightIcon
-                size={verticalScale(20)}
-                weight='bold'
-                color={colors.white}
+                    size={verticalScale(20)}
+                    weight='bold'
+                    color={colors.white}
                 />
 
             </TouchableOpacity>
@@ -87,8 +87,8 @@ const openWallet = () =>{
 export default WalletListItem
 
 const styles = StyleSheet.create({
-    container:{
-        flexDirection:'row',
+    container: {
+        flexDirection: 'row',
         alignItems: "center",
         marginBottom: verticalScale(17)
     },
@@ -98,12 +98,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.neutral600,
         borderRadius: radius._12,
-        borderCurve:"continuous",
+        borderCurve: "continuous",
         overflow: "hidden"
     },
     namecontainer: {
         flex: 1,
-        gap:2,
-        marginLeft:spacingX._10
+        gap: 2,
+        marginLeft: spacingX._10
     }
 })

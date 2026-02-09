@@ -2,6 +2,7 @@ import Header from '@/components/Header'
 import Loading from '@/components/Loading'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import TransactionList from '@/components/TransactionList'
+import { BASE_URL } from '@/config/api'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/styling'
 import SegmentedControl from '@react-native-segmented-control/segmented-control'
@@ -58,7 +59,7 @@ const Statistics = () => {
 
   const stats = transactions?.flatMap((day) => [
     {
-      value:day.amount,
+      value:  day.type!="expense"?day.amount:0 ,
       label: new Date(day.timestamp).toLocaleDateString("en-GB", {
         day: "2-digit",
         month: "short",
@@ -68,7 +69,7 @@ const Statistics = () => {
       frontColor: colors.primary
     },
     {
-      value: day.amount,
+      value: day.type=="expense"?day.amount:0,
       frontColor: colors.rose,
     },
   ])
@@ -99,7 +100,7 @@ const Statistics = () => {
     const fetchTransaction = async () => {
       const token = await SecureStore.getItemAsync("jwtToken")
       try {
-        const res = await fetch(`http://192.168.0.181:9090/transactions/getAllByUser`, {
+        const res = await fetch(BASE_URL+`/transactions/getAllByUser`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -134,7 +135,7 @@ const Statistics = () => {
 
     const token = await SecureStore.getItemAsync("jwtToken")
     try {
-      const res = await fetch(`http://192.168.0.181:9090/transactions/getWeeklyTnx`, {
+      const res = await fetch(BASE_URL+`/transactions/getWeeklyTnx`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -157,7 +158,7 @@ const Statistics = () => {
   const getMontlyStats = async () => {
     const token = await SecureStore.getItemAsync("jwtToken")
     try {
-      const res = await fetch(`http://192.168.0.181:9090/transactions/getMonthlyTnx`, {
+      const res = await fetch(BASE_URL+`/transactions/getMonthlyTnx`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -180,7 +181,7 @@ const Statistics = () => {
   const getYearlyStats = async () => {
     const token = await SecureStore.getItemAsync("jwtToken")
     try {
-      const res = await fetch(`http://192.168.0.181:9090/transactions/getYearlyTnx`, {
+      const res = await fetch(BASE_URL+`/transactions/getYearlyTnx`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -205,7 +206,7 @@ const Statistics = () => {
     <ScreenWrapper>
       <View style={styles.container} >
         <View style={styles.header} >
-          <Header title='Statistics' />
+          <Header title='Statistics' style={{ marginVertical: spacingY._25}} />
         </View>
 
         <ScrollView

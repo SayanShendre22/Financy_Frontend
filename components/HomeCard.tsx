@@ -1,3 +1,4 @@
+import { BASE_URL } from '@/config/api'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/styling'
 import { ImageBackground } from 'expo-image'
@@ -46,7 +47,7 @@ const HomeCard = ({ data }: HomeCardProps) => {
             const token = await SecureStore.getItemAsync("jwtToken")
 
             try {
-                const res = await fetch(`http://192.168.0.181:9090/bank/getAccount`, {
+                const res = await fetch(BASE_URL+`/bank/getAccount`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

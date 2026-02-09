@@ -3,6 +3,7 @@ import Header from '@/components/Header'
 import Input from '@/components/Input'
 import ModalWrapper from '@/components/ModalWrapper'
 import TransactionList from '@/components/TransactionList'
+import { BASE_URL } from '@/config/api'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/styling'
 import * as SecureStore from 'expo-secure-store'
@@ -45,7 +46,7 @@ const SearchModal = () => {
         const fetchTransaction = async () => {
             const token = await SecureStore.getItemAsync("jwtToken")
             try {
-                const res = await fetch(`http://192.168.0.181:9090/transactions/getAllByUser`, {
+                const res = await fetch(BASE_URL+`/transactions/getAllByUser`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",

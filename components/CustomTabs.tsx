@@ -5,35 +5,42 @@ import * as Icons from 'phosphor-react-native';
 import { Platform, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 
-export const CustomTabs =({ state, descriptors, navigation }: BottomTabBarProps)=> {
+export const CustomTabs = ({ state, descriptors, navigation }: BottomTabBarProps) => {
 
-    const tabbarIcon : any = {
-        home: ( isFocused : boolean )=>(
+    const tabbarIcon: any = {
+        home: (isFocused: boolean) => (
             <Icons.HouseIcon
                 size={verticalScale(30)}
-                weight={isFocused?'fill':'regular'}
-                color={isFocused? colors.primary:colors.neutral400}
+                weight={isFocused ? 'fill' : 'regular'}
+                color={isFocused ? colors.primary : colors.neutral400}
             />
         ),
-           statistics: ( isFocused : boolean )=>(
+        statistics: (isFocused: boolean) => (
             <Icons.ChartBarIcon
                 size={verticalScale(30)}
-                weight={isFocused?'fill':'regular'}
-                color={isFocused? colors.primary:colors.neutral400}
+                weight={isFocused ? 'fill' : 'regular'}
+                color={isFocused ? colors.primary : colors.neutral400}
             />
         ),
-           wallet: ( isFocused : boolean )=>(
+        learnNearn: (isFocused: boolean) => (
+            <Icons.StudentIcon
+                size={verticalScale(30)}
+                weight={isFocused ? 'fill' : 'regular'}
+                color={isFocused ? colors.primary : colors.neutral400}
+            />
+        ),
+        wallet: (isFocused: boolean) => (
             <Icons.WalletIcon
                 size={verticalScale(30)}
-                weight={isFocused?'fill':'regular'}
-                color={isFocused? colors.primary:colors.neutral400}
+                weight={isFocused ? 'fill' : 'regular'}
+                color={isFocused ? colors.primary : colors.neutral400}
             />
         ),
-           profile: ( isFocused : boolean )=>(
+        profile: (isFocused: boolean) => (
             <Icons.UserIcon
                 size={verticalScale(30)}
-                weight={isFocused?'fill':'regular'}
-                color={isFocused? colors.primary:colors.neutral400}
+                weight={isFocused ? 'fill' : 'regular'}
+                color={isFocused ? colors.primary : colors.neutral400}
             />
         ),
     }
@@ -82,9 +89,9 @@ export const CustomTabs =({ state, descriptors, navigation }: BottomTabBarProps)
                         onLongPress={onLongPress}
                         style={styles.tabbarItem}
                     >
-                            {
-                               tabbarIcon[route.name] && tabbarIcon[route.name](isFocused)
-                            }
+                        {
+                            tabbarIcon[route.name] && tabbarIcon[route.name](isFocused)
+                        }
 
                     </TouchableOpacity>
                 );
@@ -94,19 +101,19 @@ export const CustomTabs =({ state, descriptors, navigation }: BottomTabBarProps)
 }
 
 const styles = StyleSheet.create({
-    tabbar : {
-        flexDirection: "row", 
-        width:"100%",
-        height: Platform.OS=='ios'?verticalScale(73):verticalScale(55),
-        backgroundColor: colors.neutral700, 
+    tabbar: {
+        flexDirection: "row",
+        width: "100%",
+        height: Platform.OS == 'ios' ? verticalScale(73) : verticalScale(55),
+        backgroundColor: colors.neutral700,
         justifyContent: "space-around",
         alignItems: "center",
         borderTopColor: colors.neutral700,
         borderTopWidth: 1,
     },
     tabbarItem: {
-        marginBottom: Platform.OS=='ios'? spacingY._10:spacingY._5,
+        marginBottom: Platform.OS == 'ios' ? spacingY._10 : spacingY._5,
         justifyContent: "center",
-        alignItems:"center"
+        alignItems: "center"
     }
 })

@@ -5,6 +5,7 @@ import Header from '@/components/Header'
 import Input from '@/components/Input'
 import ModalWrapper from '@/components/ModalWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { WalletType } from '@/types'
 import { scale, verticalScale } from '@/utils/styling'
@@ -128,7 +129,7 @@ const WalletModal = () => {
         setLoading(true)
 
         try {
-            const res = await fetch(`http://192.168.0.181:9090/bank/deleteAcount/${walletId}`, {
+            const res = await fetch(BASE_URL+`/bank/deleteAcount/${walletId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -177,7 +178,7 @@ const WalletModal = () => {
             }
 
             try {
-                const res = await fetch(`http://192.168.0.181:9090/bank/updateBankAccount`, {
+                const res = await fetch(BASE_URL+`/bank/updateBankAccount`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -210,7 +211,7 @@ const WalletModal = () => {
             }
 
             try {
-                const res = await fetch(`http://192.168.0.181:9090/bank/createBankAccount`, {
+                const res = await fetch(BASE_URL+`/bank/createBankAccount`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -259,7 +260,7 @@ const WalletModal = () => {
         <ModalWrapper>
             <View style={styles.container} >
                 <Header
-                    title="New Wallet"
+                    title={wallet?.bankName ? wallet.bankName.toLocaleUpperCase() : "New Wallet"}
                     leftIcon={<BackButton />}
                     style={{ marginBottom: spacingY._10 }}
                 />
@@ -442,7 +443,6 @@ const styles = StyleSheet.create({
     inputContainer: {
         gap: spacingY._10
     },
-
 
     button: {
         borderWidth: 1,

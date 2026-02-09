@@ -6,6 +6,7 @@ import ImageUploade from '@/components/ImageUploade'
 import Input from '@/components/Input'
 import ModalWrapper from '@/components/ModalWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { expenseCategories, transactionTypes } from '@/constants/data'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { ExpenseCategoriesType, WalletType } from '@/types'
@@ -180,7 +181,7 @@ const TransactionModal = (item: { id: any }) => {
         const fetchUserWallets = async () => {
             const token = await SecureStore.getItemAsync("jwtToken")
             try {
-                const res = await fetch(`http://192.168.0.181:9090/bank/getAccount`, {
+                const res = await fetch(BASE_URL+`/bank/getAccount`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -246,7 +247,7 @@ const TransactionModal = (item: { id: any }) => {
         setLoading(true)
 
         try {
-            const res = await fetch(`http://192.168.0.181:9090/transactions/deleteTransaction/${transaction.id}`, {
+            const res = await fetch(BASE_URL+`/transactions/deleteTransaction/${transaction.id}`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -282,38 +283,39 @@ const TransactionModal = (item: { id: any }) => {
 
         const formData = new FormData();
 
-        formData.append("amount", transaction?.amount ?? "")
+        formData.append("amount", transaction?.amount ?? "");
         formData.append("type", transaction?.type ?? "");
         formData.append("description", transaction?.description ?? "");
         formData.append("category", transaction?.category ?? "");
-        formData.append("timestamp", transaction.timestamp.toISOString().slice(0, 19));
-        formData.append("recipt", transaction?.recipt ?? "");
-        formData.append("recipt", {
-            uri: transaction?.recipt,
-            type: "image/jpeg", // or get from picker result
-            name: "receipt.jpg",
-        } as any);
-        // if (transaction.recipt != null) {
-        //     formData.append("recipt", {
-        //         uri: transaction?.recipt,
-        //         type: "image/jpeg", // or get from picker result
-        //         name: "receipt.jpg",
-        //     } as any);
-        // } else {
-        //     formData.append("recipt", {
-        //         uri: 'D:\\PROJECTS\\financy\\assets\\images\\receipt.png',
-        //         type: "image/jpeg", // or get from picker result
-        //         name: "DemoReceipt.jpg",
-        //     } as any);
-        // }
+        formData.append(
+            "timestamp",
+            transaction.timestamp
+                .toISOString()
+                .replace('Z', '')
+                .split('.')[0]
+        );
+
+        // ✅ append file ONLY if it exists and is valid
+        if (
+            transaction?.recipt &&
+            (transaction.recipt.startsWith("file://") ||
+                transaction.recipt.startsWith("content://"))
+        ) {
+            formData.append("recipt", {
+                uri: transaction.recipt,
+                type: "image/jpeg",
+                name: "receipt.jpg",
+            } as any);
+        }
+
 
         console.log('receipt pic ', transaction.recipt)
         console.log("bank acc id ", selectedWallet?.id)
         try {
-            const res = await fetch(`http://192.168.0.181:9090/transactions/addTransactions/${selectedWallet?.id}`, {
+            const res = await fetch(BASE_URL+`/transactions/addTransactions/${selectedWallet?.id}`, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json",
+                    // "Content-Type": "application/json",
                     ...(token ? { Authorization: `Bearer ${token}` } : {}), // attach only if token exists
                 },
                 body: formData,
@@ -326,12 +328,12 @@ const TransactionModal = (item: { id: any }) => {
                 router.back()
 
             } else {
-                // console.error("❌ Failed to add transaction", res.status);
+                console.error("❌ Failed to add transaction", res.status);
                 Alert.alert("Transaction", "Added sucess")
                 router.back();
             }
         } catch (err) {
-            // console.error("⚠️ Error to add transaction", err);
+            console.error("⚠️ Error to add transaction", err);
             Alert.alert("Transaction", "Added sucess")
             router.back()
         } finally {
@@ -571,6 +573,7 @@ const TransactionModal = (item: { id: any }) => {
                             placeholder='Enter transaction amount'
                             value={transaction?.amount}
                             onChangeText={(value) => setTransaction({ ...transaction, amount: value })}
+                            keyboardType="number-pad"
                         />
                     </View>
 
@@ -636,15 +639,34 @@ const TransactionModal = (item: { id: any }) => {
                     </Button>
                 )}
 
-                <Button onPress={onSubmit} loading={loading} style={{ flex: 1 }} >
-
-                    <Typo
-                        color={colors.black} fontWeight={"700"}
+                {transaction?.id ? (
+                    <Button 
+                    onPress={()=>  {
+                        Alert.alert("Comming soon","Updating Transactions not avaliable right now, You can try deleting and then create an new Tranaction");
+                    }}
+                    loading={loading} style={{ flex: 1 }} 
                     >
-                        Add Transaction
-                    </Typo>
 
-                </Button>
+                        <Typo
+                            color={colors.black} fontWeight={"700"}
+                        >
+                            Update Transaction
+                        </Typo>
+
+                    </Button>
+                )
+                    : (
+                        <Button onPress={onSubmit} loading={loading} style={{ flex: 1 }} >
+
+                            <Typo
+                                color={colors.black} fontWeight={"700"}
+                            >
+                                Add Transaction
+                            </Typo>
+
+                        </Button>
+                    )
+                }
             </View>
 
         </ModalWrapper>

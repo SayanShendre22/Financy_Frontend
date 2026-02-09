@@ -184,3 +184,16 @@ export type WalletType = {
   ifscCode: string;
   fetchedAt: string | null;
 };
+
+export interface Lesson {
+  id: number;
+  title: string;
+  content: string;
+}
+
+export interface BookLessons {
+  book: string;
+  author_style: string;
+  summary: string;
+  lessons: Lesson[];
+}

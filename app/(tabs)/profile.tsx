@@ -1,6 +1,7 @@
 import Header from '@/components/Header'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, radius, spacingX, spacingY } from '@/constants/theme'
 import { accountOptionType } from '@/types'
 import { verticalScale } from '@/utils/styling'
@@ -53,7 +54,7 @@ const Profile = () => {
         const token = await SecureStore.getItemAsync("jwtToken")
         // console.log("sayan model "+token)
         try {
-          const res = await fetch(`http://192.168.0.181:9090/user/getUserByToken`, {
+          const res = await fetch(BASE_URL+`/user/getUserByToken`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -81,7 +82,7 @@ const Profile = () => {
         // console.log(" the token is " + token)
   
         try {
-          const res = await fetch(`http://192.168.0.181:9090/profile/getProfile`, {
+          const res = await fetch(BASE_URL+`/profile/getProfile`, {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -123,13 +124,13 @@ const Profile = () => {
     {
       title: "Settings",
       icon: <Icons.GearSixIcon size={26} color={colors.white} weight='fill' />,
-      // routeName: '/(modals)/profileModal',
+      routeName: '/(modals)/settingModal',
       bgColor: "#059669"
     },
     {
       title: "Privacy Policy",
       icon: <Icons.LockIcon size={26} color={colors.white} weight='fill' />,
-      // routeName: '/(modals)/profileModal',
+      routeName: '/(modals)/policyModal',
       bgColor: colors.neutral600
     },
     {
@@ -144,7 +145,7 @@ const Profile = () => {
 
   const handleLogout = async () => {
     setToken(null);
-
+    
     // Clear SecureStore
     await SecureStore.deleteItemAsync("jwtToken");
 
@@ -187,7 +188,7 @@ const Profile = () => {
   return (
     <ScreenWrapper>
       <View style={styles.container} >
-        <Header title='Profile' style={{ marginVertical: spacingY._10 }} />
+        <Header title='Profile' style={{ marginVertical: spacingY._25}} />
         {/* user info  */}
         <View style={styles.userInfo} >
 
@@ -195,7 +196,7 @@ const Profile = () => {
           <View  >
             <Image
               // source={userProfile?userProfile.profilePic: "../../assets/images/defaultAvatar.png" }
-              source={userProfile?.profilePic ? "http://192.168.0.181:9090/images/profilePic/" + userProfile.profilePic : "https://picsum.photos/seed/696/3000/2000"}
+              source={userProfile?.profilePic ? BASE_URL+"/images/profilePic/" + userProfile.profilePic : "https://picsum.photos/seed/696/3000/2000"}
               style={styles.avatar}
               contentFit='cover'
               transition={100}

@@ -5,18 +5,20 @@ import Typo from './Typo'
 
 const Header = ({ title = "", leftIcon, style }: HeaderProps) => {
   return (
-    <View>
+    <View  style={[styles.container, style]} >
+
       {leftIcon &&
         <Typo style={styles.leftIcon} >
           {leftIcon}
         </Typo>}
+
       {title && (
         <Typo
           size={22}
           fontWeight={"600"}
           style={{
             textAlign: "center",
-            width: leftIcon ? "82%" : "100%"
+            width: leftIcon ? "88%" : "100%"
           }}
         >
           {title}

@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Input from '@/components/Input'
 import ModalWrapper from '@/components/ModalWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { scale, verticalScale } from '@/utils/styling'
 import { Image } from 'expo-image'
@@ -63,7 +64,7 @@ const ProfileModal = () => {
       const token = await SecureStore.getItemAsync("jwtToken")
       // console.log("sayan model "+token)
       try {
-        const res = await fetch(`http://192.168.0.181:9090/user/getUserByToken`, {
+        const res = await fetch(BASE_URL+`/user/getUserByToken`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -79,9 +80,11 @@ const ProfileModal = () => {
           console.error("❌ Failed to fetch user:", res.status);
         }
       } catch (err) {
-        console.error("⚠️ Error fetching user:", err);
+       
+        console.error("⚠️ user:", err);
       } finally {
         setLoading(false);
+        //  router.replace("/login");
       }
     }
 
@@ -91,7 +94,7 @@ const ProfileModal = () => {
       // console.log(" the token is " + token)
 
       try {
-        const res = await fetch(`http://192.168.0.181:9090/profile/getProfile`, {
+        const res = await fetch(BASE_URL+`/profile/getProfile`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -151,7 +154,7 @@ const ProfileModal = () => {
     } as any);
 
     try {
-      const res = await fetch(`http://192.168.0.181:9090/profile/saveProfile?token=${token}`, {
+      const res = await fetch(BASE_URL+`/profile/saveProfile?token=${token}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

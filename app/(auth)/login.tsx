@@ -3,13 +3,15 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
 import { useRouter } from 'expo-router'
 import * as SecureStore from 'expo-secure-store'
 import * as Icons from 'phosphor-react-native'
 import React, { useContext, useRef, useState } from 'react'
-import { Alert, Pressable, StyleSheet, View } from 'react-native'
+import { Alert, Pressable, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { commingsoon } from '../(modals)/settingModal'
 import { AuthContext } from './authProvider'
 
 
@@ -36,9 +38,11 @@ const login = () => {
                 email: emailRef.current,
                 password: passwordRef.current,
             }
+            const LOGIN_URL = BASE_URL+"/auth/login";
+            
 
             // Send data to your backend API
-            const response = await fetch("http://192.168.0.181:9090/auth/login", {
+            const response = await fetch(LOGIN_URL, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -68,11 +72,44 @@ const login = () => {
         }
     }
 
+    const updateProfile = async () => {
+
+        const token = await SecureStore.getItemAsync("jwtToken")
+        const formData = new FormData();
+
+        formData.append("fullname", "");
+        formData.append("address", "");
+        formData.append("job", "");
+        formData.append("salary", "");
+        formData.append("mobileNo", "");
+        formData.append("dob", "");
+        formData.append("goal", "");
+
+        try {
+            const res = await fetch(BASE_URL+"/profile/saveProfile", {
+                method: "POST",
+                headers: {
+                    ...(token ? { Authorization: `Bearer ${token}` } : {}),
+                },
+                body: formData,
+            });
+            if (res.ok) {
+                console.log(res.status)
+                Alert.alert("Profile", "profile updated success");
+                // router.back();
+            } else {
+                console.error("❌ Failed to fetch user:", res.status);
+            }
+        } catch (err) {
+            console.error("⚠️ Error fetching user:", err);
+        }
+    }
+
 
 
     return (
         <ScreenWrapper>
-            <View style={styles.container}>
+            <View style={[styles.container, { marginTop: spacingY._40 }]}>
                 <BackButton iconSize={28} />
 
                 <View style={{ gap: 5, marginTop: spacingY._20 }}>
@@ -109,11 +146,19 @@ const login = () => {
                             weight='fill'
                         />}
                     />
-                    <Typo size={14} color={colors.text} style={{ alignSelf: 'flex-end' }} >
+                    <TouchableOpacity
+                    onPress={commingsoon}
+                    >
+                        <Typo size={14} color={colors.text} style={{ alignSelf: 'flex-end' }} >
                         Forgot Password?
                     </Typo>
 
+                    </TouchableOpacity>
                     <Button
+                        style={{
+                            paddingHorizontal: 24,      // ✅ REQUIRED
+                            minWidth: 120,
+                        }}
                         loading={isLoading}
                         onPress={handlesubmit}
                     >
@@ -125,6 +170,23 @@ const login = () => {
                             Login
                         </Typo>
                     </Button>
+
+                    {/* <Button
+                        style={{
+                            paddingHorizontal: 24,      // ✅ REQUIRED
+                            minWidth: 120,
+                        }}
+                        loading={isLoading}
+                        onPress={updateProfile}
+                    >
+                        <Typo
+                            fontWeight={"700"}
+                            color={colors.black}
+                            size={21}
+                        >
+                            create profile
+                        </Typo>
+                    </Button> */}
 
                 </View>
 

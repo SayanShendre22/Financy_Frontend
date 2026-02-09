@@ -11,7 +11,7 @@ const welcome = () => {
   const router = useRouter();
   return (
     <ScreenWrapper>
-      <View style={styles.container} >
+      <View style={[ styles.container, { marginTop: spacingY._40 }]} >
         {/* login button & image */}
 
         <View>

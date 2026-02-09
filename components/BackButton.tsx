@@ -35,6 +35,5 @@ const styles = StyleSheet.create({
         borderRadius: radius._12,
         borderCurve: "continuous",
         padding: 5,
-
     }
 })

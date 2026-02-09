@@ -3,6 +3,7 @@ import HomeCard from '@/components/HomeCard'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import TransactionList from '@/components/TransactionList'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
 import { useFocusEffect, useRouter } from 'expo-router'
@@ -42,7 +43,7 @@ const Home = () => {
     const getUser = async () => {
       const token = await SecureStore.getItemAsync("jwtToken");
       try {
-        const res = await fetch(`http://192.168.0.181:9090/user/getUserByToken`, {
+        const res = await fetch(BASE_URL+`/user/getUserByToken`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -67,7 +68,7 @@ const Home = () => {
     const fetchTransaction = async () => {
       const token = await SecureStore.getItemAsync("jwtToken")
       try {
-        const res = await fetch(`http://192.168.0.181:9090/transactions/getAllByUser`, {
+        const res = await fetch(BASE_URL+`/transactions/getAllByUser`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -100,11 +101,11 @@ const Home = () => {
     <ScreenWrapper>
       <View style={styles.container}  >
         {/* header  */}
-        <View style={styles.header} >
+        <View style={[styles.header, { marginVertical: spacingY._25 }]}>
           <View style={{ gap: 4 }} >
             <Typo size={16} color={colors.neutral400}>Hello</Typo>
             <Typo size={20} fontWeight={"500"}   >
-              {user?.username}
+              {user?.username.toLocaleUpperCase()}
             </Typo>
           </View>
           <TouchableOpacity style={styles.searchicon} onPress={() => router.push("/(modals)/searchModal")} >
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: spacingX._20,
-    marginTop: verticalScale(8)
+    marginTop: verticalScale(8),
   },
   header: {
     flexDirection: "row",

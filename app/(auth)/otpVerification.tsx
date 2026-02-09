@@ -3,6 +3,7 @@ import Button from '@/components/Button'
 import Input from '@/components/Input'
 import ScreenWrapper from '@/components/ScreenWrapper'
 import Typo from '@/components/Typo'
+import { BASE_URL } from '@/config/api'
 import { colors, spacingX, spacingY } from '@/constants/theme'
 import { verticalScale } from '@/utils/styling'
 import { useRouter } from 'expo-router'
@@ -47,7 +48,7 @@ const OTPVerification = () => {
             setLoading(true)
             // OTP Verification
             try {
-                const response = await fetch('http://192.168.0.181:9090/auth/validateOtp', {
+                const response = await fetch(BASE_URL+'/auth/validateOtp', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -65,7 +66,7 @@ const OTPVerification = () => {
                     // registering user here
 
                     // Send data to your backend API
-                    const response = await fetch("http://192.168.0.181:9090/auth/register", {
+                    const response = await fetch(BASE_URL+"/auth/register", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -99,7 +100,7 @@ const OTPVerification = () => {
 
     return (
         <ScreenWrapper>
-            <View style={styles.container}>
+            <View style={[ styles.container, { marginTop: spacingY._40 }]}>
                 <BackButton iconSize={28} />
 
                 <View style={{ gap: 5, marginTop: spacingY._20 }}>

@@ -8,35 +8,35 @@ import Loading from './Loading'
 const Button = ({
     style,
     onPress,
-    loading=false,
+    loading = false,
     children
 }: CustomButtonProps) => {
 
-    if(loading){
+    if (loading) {
         return (
-            <View style={[styles.button,style,{backgroundColor:"transparent"}]} >
+            <View style={[styles.button, style, { backgroundColor: "transparent" }]} >
                 {/* loading  */}
                 <Loading />
             </View>
         )
     }
 
-  return (
-    <TouchableOpacity onPress={onPress} style={[styles.button,style]} >
-        {children}
-    </TouchableOpacity>
-  )
+    return (
+        <TouchableOpacity onPress={onPress} style={[styles.button, style]} >
+            {children}
+        </TouchableOpacity>
+    )
 }
 
 export default Button
 
 const styles = StyleSheet.create({
-    button:{
+    button: {
         backgroundColor: colors.primary,
         borderRadius: radius._17,
         borderCurve: "continuous",
         height: verticalScale(52),
-        justifyContent:"center",
-        alignItems:"center"
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
